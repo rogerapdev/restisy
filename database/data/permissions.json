@@ -1,0 +1,51 @@
+[
+	{
+		"action": "list-users",
+		"name": "List",
+		"description": "Pode listar os usuarios existentes",
+		"resource": "users"
+	},
+	{
+		"action": "create-users",
+		"name": "Add",
+		"description": "You can create new users",
+		"resource": "users"
+	},
+	{
+		"action": "update-users",
+		"name": "Edit",
+		"description": "You can update an existing user",
+		"resource": "users"
+	},
+	{
+		"action": "delete-users",
+		"name": "Excluir",
+		"description": "You can delete existing users",
+		"resource": "users"
+	},
+
+	{
+		"action": "list-roles",
+		"name": "List",
+		"description": "You can list the existing roles",
+		"resource": "roles"
+	},
+	{
+		"action": "create-roles",
+		"name": "Add",
+		"description": "You can create new roles",
+		"resource": "roles"
+	},
+	{
+		"action": "update-roles",
+		"name": "Edit",
+		"description": "You can update an existing roles",
+		"resource": "roles"
+	},
+	{
+		"action": "delete-roles",
+		"name": "Excluir",
+		"description": "You can delete existing roles",
+		"resource": "roles"
+	}
+]

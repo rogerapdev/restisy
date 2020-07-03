@@ -1,0 +1,12 @@
+[
+	{
+		"slug": "movel",
+		"name": "Cell Phone",
+		"group": "phone"
+	},
+	{
+		"slug": "whatsapp",
+		"name": "Whatsapp",
+		"group": "phone"
+    }
+]
