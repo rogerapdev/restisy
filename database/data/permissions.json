@@ -2,7 +2,7 @@
 	{
 		"action": "list-users",
 		"name": "List",
-		"description": "Pode listar os usuarios existentes",
+		"description": "You can list existing users",
 		"resource": "users"
 	},
 	{
@@ -19,7 +19,7 @@
 	},
 	{
 		"action": "delete-users",
-		"name": "Excluir",
+		"name": "Remove",
 		"description": "You can delete existing users",
 		"resource": "users"
 	},
@@ -44,7 +44,7 @@
 	},
 	{
 		"action": "delete-roles",
-		"name": "Excluir",
+		"name": "Remove",
 		"description": "You can delete existing roles",
 		"resource": "roles"
 	}

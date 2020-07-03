@@ -12,7 +12,6 @@ class ResourceSeeder extends Seeder
      */
     public function run()
     {
-        // Get states data
         $resources = json_decode(file_get_contents(__DIR__ . '/../data/resources.json'), true);
 
         foreach ($resources as $resource) {
