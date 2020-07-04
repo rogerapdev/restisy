@@ -16,6 +16,7 @@ Base API developed in Laravel
 
 ## Request URLs (example)
 
+```json
 http://restisy.local/api/register (POST)
 
 Content-Type application/json
@@ -47,3 +48,5 @@ http://restisy.local/api/permissions?page=2 (GET)
 
 Content-Type application/json
 Authorization Bearer {token}
+
+```
