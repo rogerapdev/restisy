@@ -17,12 +17,15 @@ class RoleSeeder extends Seeder
 
         foreach ($roles as $role) {
 
+            $permissions = $role['permissions'];
+            unset($role['permissions']);
+
             $foundRole = Role::where('slug', $role['slug'])->first();
             if (!$foundRole) {
                 $foundRole = Role::create($role);
             }
 
-            foreach ($role['permissions'] as $permission) {
+            foreach ($permissions as $permission) {
                 $foundPermission = Permission::where('action', $permission)->first();
                 if ($foundPermission) {
                     

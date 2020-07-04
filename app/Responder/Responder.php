@@ -288,6 +288,25 @@ class Responder {
 
 
     /**
+     * @param array $data
+     *
+     * @return ResponseFactory|Res
+     */
+    public function respondForbiddenError()
+    {
+        if (is_null($this->getMessage()))
+            $this->setMessage(trans("responder.forbidden"));
+
+        return $this->respond([
+            "status"      => "error",
+            "status_code" => Res::HTTP_FORBIDDEN,
+        ]);
+    }
+
+
+    
+
+    /**
      * @param Paginator $paginate
      * @param           $data
      *

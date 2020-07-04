@@ -16,6 +16,7 @@ return [
     "used" => ":attribute used.",
     "re_send" => ":attribute resend.",
     "unauthenticated" => "unauthenticated!",
+    "forbidden" => "this action is unauthorized",
     "notfound" => "not found!",
     "authorization" => "You are not allowed to access this feature",
 ];

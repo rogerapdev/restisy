@@ -2,7 +2,13 @@
 
 namespace App\Http\Middleware;
 
+use Auth;
 use Closure;
+use Illuminate\Contracts\Auth\Guard;
+use ReflectionClass;
+use ReflectionException;
+
+use Illuminate\Http\Exceptions\HttpResponseException;
 use App\Responder\ResponderFacade as Responder;
 
 class Authorize
@@ -67,9 +73,10 @@ class Authorize
         $permission = $realAction . '-' . $property;
 
         $authorized = Auth::can($permission);
+        // $authorized = true;
         if (!$authorized) {
             throw new HttpResponseException(
-                Responder::respondValidationError($transformed)
+                Responder::respondForbiddenError()
             );
         }
 

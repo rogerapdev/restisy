@@ -15,7 +15,15 @@ use Illuminate\Http\Request;
 
 Route::post('/register', 'Api\AuthController@register');
 Route::post('/login', 'Api\AuthController@login');
+Route::get('/unauthorized', 'Api\AuthController@unauthorized');
 
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
+});
+
+Route::group(['middleware' => ['auth:api', 'auth.permissions']], function () {
+    $files = glob(__DIR__ . '/api/*.php');
+    foreach ($files as $file) {
+        require_once $file;
+    }
 });
