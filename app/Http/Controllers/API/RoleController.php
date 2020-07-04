@@ -9,7 +9,7 @@ use App\Responder\ResponderFacade as Responder;
 use App\Repositories\RoleRepository;
 use App\Transformers\RoleTransformer;
 
-class RoleController extends Controller
+class RoleController extends BaseController
 {
 
     /**

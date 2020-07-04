@@ -53,7 +53,6 @@ class Authorize
     {
 
         $routeArray = $request->route()->getAction();
-
         list($controller, $action) = explode('@', $routeArray['controller']);
 
         $reflect = new ReflectionClass(new $controller);
@@ -66,6 +65,7 @@ class Authorize
             $property = $property->getValue(new $controller);
         } catch (ReflectionException $e) {
             $filtred = array_filter(explode('/', $routeArray['prefix']), 'strlen');
+            if (($key = array_search('api', $filtred)) !== false) unset($filtred[$key]);
             $property = reset($filtred);
         }
 

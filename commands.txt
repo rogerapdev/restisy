@@ -1,8 +1,4 @@
-# restisy
-Base API developed in Laravel
-
-
-## Commands
+#Commands
 
 - composer install
 
@@ -15,7 +11,7 @@ Base API developed in Laravel
 
 
 
-## Request URLs (example)
+#Request URLs (example)
 
 http://restisy.local/api/register (POST)
 

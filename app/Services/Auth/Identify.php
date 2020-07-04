@@ -3,14 +3,10 @@
 namespace App\Services\Auth;
 
 use App\Models\User;
-use Illuminate\Auth\SessionGuard;
-use Hasher;
+use Illuminate\Auth\RequestGuard;
 
-class Identify extends SessionGuard
+class Identify extends RequestGuard
 {
-
-    private $isActiveKey = 'auth.is_user_login';
-    private $originalUserKey = 'auth.original_user';
 
     /**
      * Check if user is administrator
@@ -19,7 +15,7 @@ class Identify extends SessionGuard
     {
         $user = $this->user();
         if ($user) {
-            return $user->is_admin ? true : false;
+            return $this->is('admin') ? true : false;
         }
 
         return false;
@@ -38,15 +34,16 @@ class Identify extends SessionGuard
 
         $user = $this->user();
         if ($user) {
-            if ($user->is_owner) {
-                return true;
-            }
-
             if (!is_array($role)) {
                 $role = [$role];
             }
 
             $cached = json_decode($user->roles_cached, false);
+            if(count($cached) == 0){
+                $this->cacheRoles();
+                $user = User::find($user->id);
+                $cached = json_decode($user->roles_cached, false);
+            }
 
             return inArrayAll($role, $cached, $any);
         }
@@ -64,7 +61,7 @@ class Identify extends SessionGuard
 
         $user = $this->user();
         if ($user) {
-            if ($user->is_owner) {
+            if ($this->is('admin')) {
                 return true;
             }
 
@@ -73,6 +70,12 @@ class Identify extends SessionGuard
             }
 
             $cached = json_decode($user->permissions_cached, false);
+            if(count($cached) == 0){
+                $this->cachePermissions();
+                $user = User::find($user->id);
+                $cached = json_decode($user->permissions_cached, false);
+            }
+
             return inArrayAll($permission, $cached, $any);
         }
 
@@ -141,58 +144,6 @@ class Identify extends SessionGuard
         }
 
         return false;
-    }
-
-    /**
-     * Store the currently logged in user's id in session.
-     * Log the new user in
-     * @param App\Models\User $user
-     */
-    public function loginUser($user)
-    {
-        if ($user->is_admin) {
-            throw new SysException(trans('messages.auth.unauthorized'));
-        }
-
-        // if not impersonated, save current logged in user
-        // otherwise do not update (leave first original user in session)
-        if (!$this->isUserLogin()) {
-            session()->put($this->originalUserKey, auth()->user()->id);
-        }
-        auth()->loginUsingId($user->id);
-        session()->put($this->isActiveKey, true);
-
-    }
-
-    /**
-     * Logout the current user
-     * Log back in as the orignal user
-     * Delete the session
-     * @return bool
-     */
-    public function logoutUser()
-    {
-        if (!$this->isUserLogin()) {
-            return false;
-        }
-        auth()->logout();
-        // log back in as the original user
-        $originalUserId = session()->get($this->originalUserKey);
-        if ($originalUserId) {
-            auth()->loginUsingId($originalUserId);
-        }
-        session()->forget($this->originalUserKey);
-        session()->forget($this->isActiveKey);
-        return true;
-    }
-
-    /**
-     * Is a user currently busy another user
-     * @return mixed
-     */
-    public function isUserLogin()
-    {
-        return session()->has($this->isActiveKey);
     }
 
 }
