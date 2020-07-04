@@ -9,6 +9,8 @@ use App\Responder\ResponderFacade as Responder;
 use App\Repositories\RoleRepository;
 use App\Transformers\RoleTransformer;
 
+use Auth;
+
 class RoleController extends BaseController
 {
 

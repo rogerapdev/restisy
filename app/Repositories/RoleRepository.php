@@ -14,4 +14,11 @@ class RoleRepository extends Repository
     {
         return "App\Models\Role";
     }
+
+    public function bySlug($slug)
+    {
+        $instance = $this->makeModel();
+        return $instance->where('slug', $slug)->get();
+    }
+
 }

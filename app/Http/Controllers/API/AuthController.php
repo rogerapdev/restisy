@@ -9,17 +9,35 @@ use App\Responder\ResponderFacade as Responder;
 use Auth;
 
 use App\Models\User;
+use App\Repositories\UserRepository;
 
 use App\Http\Requests\RegisterRequest;
 use App\Http\Requests\LoginRequest;
 
 class AuthController extends BaseController
 {
+
+    /**
+     * @var UserRepository
+     */
+    protected $repository;
+
+    public function __construct(UserRepository $repository = null)
+    {
+        $this->repository = $repository;
+    }
+
     public function register(RegisterRequest $request)
     {
         $input = $request->all();        
         $input['password'] = bcrypt($input['password']);
-        $user = User::create($input);
+
+        $adminRoles = app('App\Repositories\RoleRepository')->bySlug('admin')->pluck('id')->all();
+
+        $user = $this->repository->create($input);
+
+        $this->repository->syncRoles($adminRoles, $user->id); 
+
         $success['token'] =  $user->createToken(env('APP_NAME', 'MyApp'))->accessToken;
         $success['name'] =  $user->name;
    

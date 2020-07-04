@@ -5,6 +5,12 @@ Base API developed in Laravel
 
 - composer install
 
+- rename .env.example to .env
+
+- php artisan key:generate
+
+- create your database and change configuration into .env
+
 - php artisan migrate
 
 - php artisan db:seed

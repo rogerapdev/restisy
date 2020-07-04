@@ -30,7 +30,7 @@ class Role extends Model
      */
     public function permissions()
     {
-        return $this->belongsToMany('App\Models\Permission', 'role_permissions', 'role_id', 'permission_id');
+        return $this->belongsToMany('App\Models\Permission', 'role_permissions', 'role_id', 'permission_id')->withTimestamps();
     }
 
     /**
@@ -40,6 +40,6 @@ class Role extends Model
      */
     public function users()
     {
-        return $this->belongsToMany('App\Models\User', 'user_roles', 'role_id', 'user_id');
+        return $this->belongsToMany('App\Models\User', 'user_roles', 'role_id', 'user_id')->withTimestamps();
     }
 }
