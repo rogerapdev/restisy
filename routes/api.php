@@ -21,6 +21,9 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+
+Route::bind('id', function ($id) { return Hasher::decode($id);});
+
 Route::group(['middleware' => ['auth:api', 'auth.permissions']], function () {
     $files = glob(__DIR__ . '/api/*.php');
     foreach ($files as $file) {

@@ -6,25 +6,26 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
 use App\Responder\ResponderFacade as Responder;
-use App\Repositories\RoleRepository;
-use App\Transformers\RoleTransformer;
+use App\Repositories\TypeRepository;
+use App\Transformers\TypeTransformer;
 
-use Auth;
+use App\Http\Requests\TypeRequest;
 
-class RoleController extends BaseController
+class TypeController extends Controller
 {
 
     /**
-     * @var RoleRepository
+     * @var TypeRepository
      */
     protected $repository;
 
-    public function __construct(RoleRepository $repository = null)
+    public function __construct(TypeRepository $repository = null)
     {
 
         $this->repository = $repository;
 
     }
+
 
     /**
      * Display a listing of the resource.
@@ -33,10 +34,10 @@ class RoleController extends BaseController
      */
     public function index()
     {
-        $roles = $this->repository->paginate(env('PER_PAGE'));
+        $types = $this->repository->paginate(env('PER_PAGE'));
 
-        $data = (new RoleTransformer)->transformCollection($roles);
-        return Responder::respondWithPagination($roles, $data);
+        $data = (new TypeTransformer)->transformCollection($types);
+        return Responder::respondWithPagination($types, $data);
     }
 
     /**
@@ -55,9 +56,18 @@ class RoleController extends BaseController
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(TypeRequest $request)
     {
-        //
+        try {
+            $type = $this->repository->create($request->all());
+        } catch (Exception $e) {
+            return Responder::respondNotFound();
+        }
+
+        $data = (new TypeTransformer)->transform($type);
+        return Responder::setRespondData($data)
+                ->respond();
+
     }
 
     /**
@@ -69,7 +79,6 @@ class RoleController extends BaseController
     public function show($id)
     {
         return Responder::respondNotFound();
-                
     }
 
     /**
@@ -80,16 +89,15 @@ class RoleController extends BaseController
      */
     public function edit($id)
     {
-
         try {
-            $role = $this->repository->with(['permissions'])->find($id);
+            $type = $this->repository->find($id);
         } catch (Exception $e) {
             return Responder::respondNotFound();
         }
 
-        return Responder::setRespondData($role)
+        $data = (new TypeTransformer)->transform($type);
+        return Responder::setRespondData($data)
                 ->respond();
-
     }
 
     /**
@@ -99,9 +107,16 @@ class RoleController extends BaseController
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(TypeRequest $request, $id)
     {
-        //
+        try {
+            $type = $this->repository->update($request->all(), $id);
+        } catch (Exception $e) {
+            return Responder::respondBadRequest();
+        }
+
+        $data = (new TypeTransformer)->transform($type);
+        return Responder::respondUpdated($data);
     }
 
     /**
@@ -112,6 +127,12 @@ class RoleController extends BaseController
      */
     public function destroy($id)
     {
-        //
+        try {
+            $this->repository->delete($id);
+        } catch (Exception $e) {
+            return Responder::respondNotFound();
+        }
+
+        return Responder::respondDeleted();
     }
 }

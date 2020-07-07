@@ -230,6 +230,8 @@ return [
 
         // 'Responder' => App\Responder\ResponderFacade::class 
 
+        'Hasher' => App\Helpers\Hasher::class,
+
     ],
 
 ];
